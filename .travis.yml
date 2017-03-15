@@ -2,7 +2,7 @@ sudo: required
 
 language: c
 
-service:
+services:
   - docker
 
 addons:
