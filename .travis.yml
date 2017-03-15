@@ -27,4 +27,4 @@ before_script:
   - autoreconf --install --force
 
 script:
-  - ./configure && make && make features/binlog.feature
+  - docker ps && ./configure && make && make features/binlog.feature
