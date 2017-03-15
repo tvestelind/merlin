@@ -13,6 +13,7 @@ addons:
     - check
     - gcc
     - gperf
+    - help2man
     - libdbi-dev
     - libglib2.0-dev
     - libtool
