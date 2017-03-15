@@ -293,10 +293,10 @@ cukemerlin_LDADD = $(naemon_LIBS) $(GLIB_LIBS) $(GIO_LIBS) $(GIO_UNIX_LIBS)
 int-test: $(feature_tests)
 
 $(DOCKER_CONTAINER):
-	@docker build --tag=$@ $@
+	@docker build --file $@/Dockerfile --tag=$@ .
 
 $(feature_tests): $(DOCKER_CONTAINER)
-	@docker run --volume=$(shell pwd):/tmp/m --workdir=/tmp/m --interactive=true --rm=true $< bash -c 'cucumber --format=json --out=$@.json $@'
+	@docker run --workdir /tmp/merlin_repo --volume /tmp/merlin/out:/tmp/merlin_repo/out --interactive=true --rm=true $< bash -c 'cucumber --format=json --out=./out/$(shell basename $@).json $@ > ./out/$(shell basename $@).stdout 2>&1'
 
 
 apps/op5: apps/mon.py
