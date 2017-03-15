@@ -1,2 +1,29 @@
+sudo: required
+
 language: c
-before_script: autoreconf --install --force
+
+service:
+  - docker
+
+addons:
+  apt:
+    packages:
+    - autoconf
+    - automake
+    - check
+    - gcc
+    - gperf
+    - libdbi-dev
+    - libglib2.0-dev
+    - libtool
+    - unzip
+    - wget
+
+before_script:
+  - wget https://github.com/naemon/naemon-core/archive/master.zip
+  - unzip master.zip
+  - pushd naemon-core-master && autoreconf --install --force && ./configure --prefix=/usr --libdir=/lib64 && make && sudo make install && popd
+  - autoreconf --install --force
+
+script:
+  - PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ ./configure && make && make feature/binlog.feature
