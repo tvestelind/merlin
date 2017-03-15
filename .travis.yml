@@ -22,7 +22,7 @@ addons:
 before_script:
   - wget https://github.com/naemon/naemon-core/archive/master.zip
   - unzip master.zip
-  - pushd naemon-core-master && autoreconf --install --force && ./configure --prefix=/usr --libdir=/lib64 && make && sudo make install && popd
+  - pushd naemon-core-master && autoreconf --install --force && ./configure && make && sudo make install && popd
   - autoreconf --install --force
 
 script:
