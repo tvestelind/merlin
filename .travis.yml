@@ -26,4 +26,4 @@ before_script:
   - autoreconf --install --force
 
 script:
-  - pkg-config --variable pc_path pkg-config && PKG_CONFIG_PATH=/usr/lib64/pkgconfig/ ./configure && make && make feature/binlog.feature
+  - ./configure && make && make features/binlog.feature
