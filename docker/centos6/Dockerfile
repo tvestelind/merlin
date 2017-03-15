@@ -1,18 +1,40 @@
-FROM centos:6
-COPY op5repos.repo /etc/yum.repos.d/
-COPY RPM-GPG-KEY-op5 /etc/pki/rpm-gpg/
+FROM centos:7
 
-# Good to have
-RUN yum install --assumeyes vim yum-utils git
 # Building tools
-RUN yum install --assumeyes autoconf automake libtool gcc gdb
-# Building project
-RUN yum install --assumeyes glib2-devel check-devel libdbi-devel op5-naemon-devel gperf
-# Running project
-RUN yum install --assumeyes naemon monitor-livestatus libdbi-drivers libdbi libdbi-dbd-mysql mysql-libs
-# Functional testing
-RUN yum install --assumeyes ruby20-devel rubygem20-cucumber rubygem20-multi_json mysql mysql-server mysql-devel rubygem20-op5cucumber
-RUN gem2.0 install sequel mysql2
-# Update everything
-RUN yum upgrade --assumeyes
-RUN yum clean all
+RUN yum install --assumeyes \
+    autoconf \
+    automake \
+    check-devel \
+    gcc \
+    gdb \
+    git \
+    glib2-devel \
+    gperf \
+    help2man \
+    libdbi \
+    libdbi-dbd-mysql \
+    libdbi-devel \
+    libdbi-drivers \
+    libtool \
+    make \
+    mariadb \
+    mariadb-devel \
+    mariadb-libs \
+    mariadb-server \
+    monitor-livestatus \
+    ruby-devel \
+    rubygems
+
+RUN gem install \
+    cucumber \
+    multi_json \
+    mysql2 \
+    sequel
+
+RUN yum upgrade --assumeyes && yum clean all
+
+RUN git clone https://github.com/naemon/naemon-core.git
+WORKDIR naemon-core
+ARG NAEMON_BRANCH=origin/master
+RUN git fetch -a && git checkout $NAEMON_BRANCH
+RUN ./autogen.sh && make -j install
