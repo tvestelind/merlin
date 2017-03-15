@@ -11,6 +11,7 @@ addons:
     - autoconf
     - automake
     - check
+    - docker-engine
     - gcc
     - gperf
     - help2man
